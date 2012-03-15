@@ -15,14 +15,15 @@ class Tumblrme < Sinatra::Base
     end
     response = connection.get do |req|
       req.params["api_key"] = 'qpvITi2QuD3We7q6iz9ofLGVYLAVZ64g2XK5p7aZwcJ0KSg5nf'
-      req.params["limit"]   = '20'
+      req.params["limit"]   = '200'
     end
     response.body.response.posts.map do |post|
-      url = post.photos.first.alt_sizes.select do |size|
-        size.width == 500
-      end.first.url
-      { tumblr: url }
-    end
+      urls = post.photos.map do |photo|
+        photo.alt_sizes.select{|size| size.width == 500}.map{|size| size.url}
+      end.flatten
+
+      urls.map{|url| { tumblr: url }}
+    end.flatten
   end
 
   before do
