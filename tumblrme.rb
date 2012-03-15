@@ -20,7 +20,7 @@ class Tumblrme < Sinatra::Base
     response.body.response.posts.map do |post|
       url = post.photos.first.alt_sizes.select do |size|
         size.width == 500
-      end.first
+      end.first.url
       { tumblr: url }
     end
   end
