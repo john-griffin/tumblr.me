@@ -6,7 +6,7 @@ gem 'faraday_middleware', "~> 0.8.5"
 gem 'json'
 gem "i18n"
 gem "activesupport"
-gem "simple_oauth"
+gem "rash"
 
 group :development do
   gem 'shotgun'

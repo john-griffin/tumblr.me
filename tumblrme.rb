@@ -6,7 +6,7 @@ require "active_support/cache"
 class Tumblrme < Sinatra::Base
   def tumblrs
     connection = Faraday.new(:url => 'http://api.tumblr.com/v2/blog/kimjongillookingatthings.tumblr.com/posts/photo') do |conn|
-      conn.request :json
+      conn.response :rashify
       conn.response :json, :content_type => /\bjson$/
       conn.response :caching do
         ActiveSupport::Cache::FileStore.new 'tmp/cache', :namespace => 'faraday', :expires_in => 3600
@@ -17,7 +17,12 @@ class Tumblrme < Sinatra::Base
       req.params["api_key"] = 'qpvITi2QuD3We7q6iz9ofLGVYLAVZ64g2XK5p7aZwcJ0KSg5nf'
       req.params["limit"]   = '20'
     end
-    response.body["response"]["posts"].map{|post| {tumblr: post["photos"][0]["alt_sizes"].select{|size| size["width"] == 500}[0]["url"]}}
+    response.body.response.posts.map do |post|
+      url = post.photos.first.alt_sizes.select do |size|
+        size.width == 500
+      end.first
+      { tumblr: url }
+    end
   end
 
   before do

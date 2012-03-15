@@ -8,6 +8,7 @@ GEM
       multipart-post (~> 1.1)
     faraday_middleware (0.8.5)
       faraday (>= 0.7.4, < 0.9)
+    hashie (1.2.0)
     heroku (2.18.1)
       launchy (>= 0.3.2)
       rest-client (~> 1.6.1)
@@ -23,12 +24,13 @@ GEM
     rack (1.4.0)
     rack-protection (1.2.0)
       rack
+    rash (0.3.2)
+      hashie (~> 1.2.0)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     rubyzip (0.9.5)
     shotgun (0.9)
       rack (>= 1.0)
-    simple_oauth (0.1.5)
     sinatra (1.3.2)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
@@ -46,6 +48,6 @@ DEPENDENCIES
   heroku
   i18n
   json
+  rash
   shotgun
-  simple_oauth
   sinatra
