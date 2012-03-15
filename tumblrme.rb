@@ -17,11 +17,13 @@ class Tumblrme < Sinatra::Base
       req.params["api_key"] = ENV["API_KEY"]
       req.params["limit"]   = '200'
     end
-    response.body.response.posts.map do |post|
-      post.photos.map do |photo|
-        photo.alt_sizes.select{|size| size.width == 500}.map{|size| size.url}
-      end.flatten.map{|url| { tumblr: url }}
-    end.flatten
+    unless response.body.response.is_a? Array
+      response.body.response.posts.map do |post|
+        post.photos.map do |photo|
+          photo.alt_sizes.select{|size| size.width == 500}.map{|size| size.url}
+        end.flatten.map{|url| { tumblr: url }}
+      end.flatten
+    end
   end
 
   before do
@@ -33,10 +35,12 @@ class Tumblrme < Sinatra::Base
   end
 
   get '/:name/random' do
-    tumblrs(params[:name]).sample.to_json
+    tumblrs = tumblrs(params[:name])
+    (tumblrs ? tumblrs.sample : nil).to_json
   end
 
   get '/:name/bomb' do
-    tumblrs(params[:name]).sample((params[:count] || 5).to_i).to_json
+    tumblrs = tumblrs(params[:name])
+    (tumblrs ? tumblrs.sample((params[:count] || 5).to_i) : nil).to_json
   end
 end
