@@ -18,11 +18,9 @@ class Tumblrme < Sinatra::Base
       req.params["limit"]   = '200'
     end
     response.body.response.posts.map do |post|
-      urls = post.photos.map do |photo|
+      post.photos.map do |photo|
         photo.alt_sizes.select{|size| size.width == 500}.map{|size| size.url}
-      end.flatten
-
-      urls.map{|url| { tumblr: url }}
+      end.flatten.map{|url| { tumblr: url }}
     end.flatten
   end
 
