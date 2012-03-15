@@ -35,4 +35,8 @@ class Tumblrme < Sinatra::Base
   get '/:name/random' do
     tumblrs(params[:name]).sample.to_json
   end
+
+  get '/:name/bomb' do
+    tumblrs(params[:name]).sample((params[:count] || 5).to_i).to_json
+  end
 end
